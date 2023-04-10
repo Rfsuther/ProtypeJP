@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\.visualgdb",
+    "\\.visualgdb\\CodeExplorer",
+    "\\Drivers",
+    "\\Drivers\\CMSIS",
+    "\\Drivers\\CMSIS\\Device",
+    "\\Drivers\\CMSIS\\Device\\ST",
+    "\\Drivers\\CMSIS\\Device\\ST\\STM32F7xx",
+    "\\Drivers\\CMSIS\\Device\\ST\\STM32F7xx\\Source",
+    "\\Drivers\\CMSIS\\Device\\ST\\STM32F7xx\\Source\\Templates"
+  ],
+  "PreviewInSolutionExplorer": false
+}
