@@ -400,12 +400,6 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-void HAL_TIM_PeriodElaspsedCallback(TIM_HandleTypeDef *htim)
-{
-//    HAL_ADC_Start 
-	asm("nop");
-	timerInterupts = timerInterupts+1;
-}
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 {
 	asm("nop");
