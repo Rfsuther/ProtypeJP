@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<VisualGDBUserPreferences xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <UserDefinedVariableValues />
+  <DebugPreferences xsi:type="com.visualgdb.debug.embedded.preferences">
+    <CatchpointConfiguration>
+      <Exec>false</Exec>
+      <Fork>false</Fork>
+      <Vfork>false</Vfork>
+      <Syscalls />
+      <CXXCatchpoints />
+    </CatchpointConfiguration>
+    <MaskInterruptsWhileStepping>false</MaskInterruptsWhileStepping>
+    <MemoryWindowPreferences>
+      <MemoryWindowPreferences>
+        <ExpressionHistory>
+          <string>0x20000458</string>
+        </ExpressionHistory>
+        <SymbolicMode>true</SymbolicMode>
+        <TakeAddressMode>false</TakeAddressMode>
+        <Format>
+          <DataWidth>TwoBytes</DataWidth>
+          <DataFormat>Hexadecimal</DataFormat>
+          <TextFormat>ANSI</TextFormat>
+        </Format>
+        <LiveMemorySettings>
+          <Enabled>true</Enabled>
+          <BreakOnChanges>false</BreakOnChanges>
+          <AutoRefresh>false</AutoRefresh>
+          <RefreshTimeout>0</RefreshTimeout>
+        </LiveMemorySettings>
+        <ShowStatusBar>true</ShowStatusBar>
+        <DisplaySymbols>false</DisplaySymbols>
+      </MemoryWindowPreferences>
+    </MemoryWindowPreferences>
+    <RealTimeWatchPreferences>
+      <Presets />
+      <ImplicitPreset>
+        <Watches />
+      </ImplicitPreset>
+      <StopOnOverflow>false</StopOnOverflow>
+    </RealTimeWatchPreferences>
+    <e>
+      <e32>
+        <c>Adc1Results</c>
+        <b>com.sysprogs.types.builtin.UInt32</b>
+        <f>true</f>
+        <e>
+          <ComparisonMode>Equals</ComparisonMode>
+          <Enabled>false</Enabled>
+        </e>
+        <h>false</h>
+        <g>false</g>
+        <a>false</a>
+      </e32>
+      <e32>
+        <c>ADC2_val</c>
+        <b>com.sysprogs.types.builtin.UInt16</b>
+        <f>true</f>
+        <e>
+          <ComparisonMode>Equals</ComparisonMode>
+          <Enabled>false</Enabled>
+        </e>
+        <h>true</h>
+        <g>false</g>
+        <a>false</a>
+      </e32>
+    </e>
+    <b>
+      <a>
+        <a>com.sysprogs.AllGlobals</a>
+        <b />
+      </a>
+      <a>
+        <a>com.sysprogs.SpecificVariables</a>
+        <b>
+          <e32>
+            <c>Adc1Results[0]</c>
+            <b>com.sysprogs.types.builtin.UInt16</b>
+            <f>true</f>
+            <e>
+              <ComparisonMode>Equals</ComparisonMode>
+              <Enabled>false</Enabled>
+            </e>
+            <h>true</h>
+            <g>false</g>
+            <a>false</a>
+          </e32>
+          <e32>
+            <c>Adc1Results[1]</c>
+            <b>com.sysprogs.types.builtin.UInt16</b>
+            <f>true</f>
+            <e>
+              <ComparisonMode>Equals</ComparisonMode>
+              <Enabled>false</Enabled>
+            </e>
+            <h>true</h>
+            <g>false</g>
+            <a>false</a>
+          </e32>
+        </b>
+      </a>
+      <a>
+        <a>com.sysprogs.Custom</a>
+        <b />
+      </a>
+    </b>
+    <c>
+      <b>SpecificVariables</b>
+      <a>false</a>
+    </c>
+    <Suggestions />
+    <HardwareRegisters />
+  </DebugPreferences>
+</VisualGDBUserPreferences>
