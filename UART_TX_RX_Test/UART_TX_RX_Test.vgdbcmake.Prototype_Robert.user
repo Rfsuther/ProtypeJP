@@ -13,7 +13,20 @@
     <MemoryWindowPreferences />
     <e>
       <e32>
+        <c>rxBuffer</c>
+        <b>com.sysprogs.fixed</b>
+        <f>true</f>
+        <e>
+          <ComparisonMode>Equals</ComparisonMode>
+          <Enabled>false</Enabled>
+        </e>
+        <h>false</h>
+        <g>false</g>
+        <a>false</a>
+      </e32>
+      <e32>
         <c>txStatus</c>
+        <b>com.sysprogs.types.builtin.UInt8</b>
         <f>true</f>
         <e>
           <ComparisonMode>Equals</ComparisonMode>
@@ -27,7 +40,56 @@
     <b>
       <a>
         <a>com.sysprogs.AllGlobals</a>
-        <b />
+        <b>
+          <e32>
+            <c>rxBuffer</c>
+            <b>com.sysprogs.fixed</b>
+            <f>true</f>
+            <e>
+              <ComparisonMode>Equals</ComparisonMode>
+              <Enabled>false</Enabled>
+            </e>
+            <h>false</h>
+            <g>false</g>
+            <a>false</a>
+          </e32>
+          <e32>
+            <c>rxBuffer[0]</c>
+            <b>com.sysprogs.types.builtin.HexInt8</b>
+            <f>true</f>
+            <e>
+              <ComparisonMode>Equals</ComparisonMode>
+              <Enabled>false</Enabled>
+            </e>
+            <h>true</h>
+            <g>false</g>
+            <a>false</a>
+          </e32>
+          <e32>
+            <c>rxBuffer[1]</c>
+            <b>com.sysprogs.types.builtin.HexInt8</b>
+            <f>true</f>
+            <e>
+              <ComparisonMode>Equals</ComparisonMode>
+              <Enabled>false</Enabled>
+            </e>
+            <h>false</h>
+            <g>false</g>
+            <a>false</a>
+          </e32>
+          <e32>
+            <c>rxBuffer[2]</c>
+            <b>com.sysprogs.types.builtin.HexInt8</b>
+            <f>true</f>
+            <e>
+              <ComparisonMode>Equals</ComparisonMode>
+              <Enabled>false</Enabled>
+            </e>
+            <h>false</h>
+            <g>false</g>
+            <a>false</a>
+          </e32>
+        </b>
       </a>
       <a>
         <a>com.sysprogs.SpecificVariables</a>
@@ -233,7 +295,7 @@
         <State>
           <IsFavorite>false</IsFavorite>
           <IsLive>false</IsLive>
-          <LastUsed>133257591952707812</LastUsed>
+          <LastUsed>133257625091532110</LastUsed>
         </State>
       </HardwareRegisterRecord>
     </HardwareRegisters>

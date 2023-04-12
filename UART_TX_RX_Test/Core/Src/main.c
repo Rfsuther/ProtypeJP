@@ -43,7 +43,10 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint8_t testBuffer[13] = {'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd','\r','\n'};
+uint8_t txBuffer[13] = {'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd','\r','\n'};
+uint8_t rxBuffer[3] ;
+HAL_StatusTypeDef txStatus; //return status on tranmit for debugging
+HAL_StatusTypeDef rxStatus; //return status on receive for debugging
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -90,8 +93,7 @@ int main(void)
 	//Reset LEDS and prepare tx and rx error catchers
 	HAL_GPIO_WritePin(LED_Red_GPIO_Port, LED_Red_Pin, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(LED_Blue_GPIO_Port, LED_Blue_Pin, GPIO_PIN_RESET);
-	HAL_StatusTypeDef txStatus; //return status on tranmit for debugging
-	HAL_StatusTypeDef rxStatus; //return status on receive for debugging
+
 	
   /* USER CODE END 2 */
 
@@ -113,14 +115,15 @@ int main(void)
 		//HAL_ERROR    = 0x01U,
 		//HAL_BUSY     = 0x02U,
 		//HAL_TIMEOUT  = 0x03U
-	HAL_Delay(500);
-	HAL_GPIO_WritePin(LED_Blue_GPIO_Port, LED_Blue_Pin, GPIO_PIN_SET);
-	txStatus = HAL_UART_Transmit(&huart3, testBuffer, sizeof(testBuffer) / sizeof(testBuffer[0]), 100);
+	//HAL_Delay(500);
+	//HAL_GPIO_WritePin(LED_Blue_GPIO_Port, LED_Blue_Pin, GPIO_PIN_SET);
+	  txStatus = HAL_UART_Transmit(&huart3, txBuffer, sizeof(txBuffer) / sizeof(txBuffer[0]), 100);
+	  rxStatus = HAL_UART_Receive(&huart3, rxBuffer, sizeof(rxBuffer) / sizeof(rxBuffer[0]), 500);
 	if(txStatus != HAL_OK)
 		Error_Handler();
-	HAL_Delay(1);
-	HAL_GPIO_WritePin(LED_Blue_GPIO_Port, LED_Blue_Pin, GPIO_PIN_RESET);
-	  
+	//HAL_Delay(1);
+	//HAL_GPIO_WritePin(LED_Blue_GPIO_Port, LED_Blue_Pin, GPIO_PIN_RESET);
+	  HAL_GPIO_TogglePin(LED_Blue_GPIO_Port, LED_Blue_Pin);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -192,6 +195,7 @@ void Error_Handler(void)
 	HAL_GPIO_WritePin(LED_Blue_GPIO_Port, LED_Blue_Pin, GPIO_PIN_RESET);
   while (1)
   {
+	  //Display Debug Light
 	  HAL_GPIO_TogglePin(LED_Red_GPIO_Port, LED_Red_Pin);
 	  HAL_Delay(200);
   }
