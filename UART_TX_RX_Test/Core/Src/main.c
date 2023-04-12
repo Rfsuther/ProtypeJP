@@ -87,8 +87,11 @@ int main(void)
   MX_GPIO_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
+	//Reset LEDS and prepare tx and rx error catchers
+	HAL_GPIO_WritePin(LED_Red_GPIO_Port, LED_Red_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_Blue_GPIO_Port, LED_Blue_Pin, GPIO_PIN_RESET);
 	HAL_StatusTypeDef txStatus; //return status on tranmit for debugging
-	
+	HAL_StatusTypeDef rxStatus; //return status on receive for debugging
 	
   /* USER CODE END 2 */
 
@@ -110,8 +113,14 @@ int main(void)
 		//HAL_ERROR    = 0x01U,
 		//HAL_BUSY     = 0x02U,
 		//HAL_TIMEOUT  = 0x03U
-	  HAL_StatusTypeDef txStatus = HAL_UART_Transmit(&huart3, testBuffer, sizeof(testBuffer) / sizeof(testBuffer[0]), 100);
-	  HAL_Delay(500);
+	HAL_Delay(500);
+	HAL_GPIO_WritePin(LED_Blue_GPIO_Port, LED_Blue_Pin, GPIO_PIN_SET);
+	txStatus = HAL_UART_Transmit(&huart3, testBuffer, sizeof(testBuffer) / sizeof(testBuffer[0]), 100);
+	if(txStatus != HAL_OK)
+		Error_Handler();
+	HAL_Delay(1);
+	HAL_GPIO_WritePin(LED_Blue_GPIO_Port, LED_Blue_Pin, GPIO_PIN_RESET);
+	  
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -179,8 +188,12 @@ void Error_Handler(void)
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
   __disable_irq();
+	HAL_GPIO_WritePin(LED_Red_GPIO_Port, LED_Red_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_Blue_GPIO_Port, LED_Blue_Pin, GPIO_PIN_RESET);
   while (1)
   {
+	  HAL_GPIO_TogglePin(LED_Red_GPIO_Port, LED_Red_Pin);
+	  HAL_Delay(200);
   }
   /* USER CODE END Error_Handler_Debug */
 }

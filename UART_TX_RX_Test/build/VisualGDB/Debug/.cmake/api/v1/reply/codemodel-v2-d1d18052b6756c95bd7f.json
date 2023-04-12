@@ -49,14 +49,14 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "UART_TX_RX_Test::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-UART_TX_RX_Test-DEBUG-b6a208cccb833d7bb8a2.json",
+					"jsonFile" : "target-UART_TX_RX_Test-DEBUG-3b196b736f5d6185cd59.json",
 					"name" : "UART_TX_RX_Test",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "UART_TX_RX_Test-bin::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-UART_TX_RX_Test-bin-DEBUG-c95cf1b71d4d73c3c35f.json",
+					"jsonFile" : "target-UART_TX_RX_Test-bin-DEBUG-218b68de8d6c001894d0.json",
 					"name" : "UART_TX_RX_Test-bin",
 					"projectIndex" : 0
 				}
