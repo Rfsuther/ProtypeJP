@@ -1,0 +1,77 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "RELEASE",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "UART_TX_RX_Test",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "BSP::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-BSP-RELEASE-0025d898defd29514890.json",
+					"name" : "BSP",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "UART_TX_RX_Test::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-UART_TX_RX_Test-RELEASE-bafa248ba69d5299f71f.json",
+					"name" : "UART_TX_RX_Test",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "UART_TX_RX_Test-bin::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-UART_TX_RX_Test-bin-RELEASE-4a508fa66de07fdb8e21.json",
+					"name" : "UART_TX_RX_Test-bin",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/Prototype_Robert/source/repos/ProtypeJP/UART_TX_RX_Test/build/VisualGDB/Release",
+		"source" : "C:/Users/Prototype_Robert/source/repos/ProtypeJP/UART_TX_RX_Test"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 2
+	}
+}

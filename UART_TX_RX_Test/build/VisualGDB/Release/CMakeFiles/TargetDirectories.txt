@@ -1,0 +1,5 @@
+C:/Users/Prototype_Robert/source/repos/ProtypeJP/UART_TX_RX_Test/build/VisualGDB/Release/CMakeFiles/UART_TX_RX_Test.dir
+C:/Users/Prototype_Robert/source/repos/ProtypeJP/UART_TX_RX_Test/build/VisualGDB/Release/CMakeFiles/BSP.dir
+C:/Users/Prototype_Robert/source/repos/ProtypeJP/UART_TX_RX_Test/build/VisualGDB/Release/CMakeFiles/UART_TX_RX_Test-bin.dir
+C:/Users/Prototype_Robert/source/repos/ProtypeJP/UART_TX_RX_Test/build/VisualGDB/Release/CMakeFiles/edit_cache.dir
+C:/Users/Prototype_Robert/source/repos/ProtypeJP/UART_TX_RX_Test/build/VisualGDB/Release/CMakeFiles/rebuild_cache.dir
