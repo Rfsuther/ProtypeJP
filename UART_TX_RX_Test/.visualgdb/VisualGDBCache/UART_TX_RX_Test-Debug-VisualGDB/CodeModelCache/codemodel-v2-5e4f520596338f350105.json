@@ -42,14 +42,14 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "BSP::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-BSP-DEBUG-b1353a09b33b565ebf65.json",
+					"jsonFile" : "target-BSP-DEBUG-7315f2e7b83175e270ae.json",
 					"name" : "BSP",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "UART_TX_RX_Test::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-UART_TX_RX_Test-DEBUG-3b196b736f5d6185cd59.json",
+					"jsonFile" : "target-UART_TX_RX_Test-DEBUG-cf2bb6d40654922ccb1c.json",
 					"name" : "UART_TX_RX_Test",
 					"projectIndex" : 0
 				},

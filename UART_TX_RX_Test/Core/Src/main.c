@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "dma.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -37,14 +38,17 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
+#define txBuffSize 13
+#define rxBuffSize 13
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint8_t txBuffer[13] = {'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd','\r','\n'};
-uint8_t rxBuffer[3] ;
+uint8_t txBuffer[txBuffSize] = { 'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd', '\r', '\n' };
+uint8_t rxBuffer[rxBuffSize];
+uint8_t rxStorageBuffer[rxBuffSize];
+
 HAL_StatusTypeDef txStatus; //return status on tranmit for debugging
 HAL_StatusTypeDef rxStatus; //return status on receive for debugging
 /* USER CODE END PV */
@@ -88,12 +92,19 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
 	//Reset LEDS and prepare tx and rx error catchers
 	HAL_GPIO_WritePin(LED_Red_GPIO_Port, LED_Red_Pin, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(LED_Blue_GPIO_Port, LED_Blue_Pin, GPIO_PIN_RESET);
-
+	
+	//ConfigureDMA
+	rxStatus = HAL_UARTEx_ReceiveToIdle_DMA(&huart3, rxBuffer, sizeof(rxBuffer) / sizeof(rxBuffer[0]));
+	if (rxStatus != HAL_OK)
+		Error_Handler();
+	__HAL_DMA_DISABLE_IT(&hdma_usart3_rx, DMA_IT_HT); //remeber that I set DMA handel to extern in the .h file this may cause bugs
+	
 	
   /* USER CODE END 2 */
 
@@ -115,15 +126,14 @@ int main(void)
 		//HAL_ERROR    = 0x01U,
 		//HAL_BUSY     = 0x02U,
 		//HAL_TIMEOUT  = 0x03U
-	//HAL_Delay(500);
+	HAL_Delay(500);
 	//HAL_GPIO_WritePin(LED_Blue_GPIO_Port, LED_Blue_Pin, GPIO_PIN_SET);
 	  txStatus = HAL_UART_Transmit(&huart3, txBuffer, sizeof(txBuffer) / sizeof(txBuffer[0]), 100);
-	  rxStatus = HAL_UART_Receive(&huart3, rxBuffer, sizeof(rxBuffer) / sizeof(rxBuffer[0]), 500);
+	  //rxStatus = HAL_UART_Receive(&huart3, rxBuffer, sizeof(rxBuffer) / sizeof(rxBuffer[0]), 500);
 	if(txStatus != HAL_OK)
 		Error_Handler();
 	//HAL_Delay(1);
 	//HAL_GPIO_WritePin(LED_Blue_GPIO_Port, LED_Blue_Pin, GPIO_PIN_RESET);
-	  HAL_GPIO_TogglePin(LED_Blue_GPIO_Port, LED_Blue_Pin);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -179,6 +189,22 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
+{
+	//USART3 section for host communication
+	if (huart->Instance == USART3)
+	{
+		memcpy(rxStorageBuffer, rxBuffer, Size);
+	}
+	
+	rxStatus = HAL_UARTEx_ReceiveToIdle_DMA(&huart3, rxBuffer, sizeof(rxBuffer) / sizeof(rxBuffer[0]));
+	if (rxStatus != HAL_OK)
+		Error_Handler();
+	__HAL_DMA_DISABLE_IT(&hdma_usart3_rx, DMA_IT_HT); //remeber that I set DMA handel to extern in the .h file this may cause bugs
+	HAL_GPIO_TogglePin(LED_Blue_GPIO_Port, LED_Blue_Pin);
+}
+
 
 /* USER CODE END 4 */
 
