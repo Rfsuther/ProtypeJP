@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.33423.256
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{803FD0C6-D64E-4E16-9DC3-1DAEC859A3D2}") = "MVP_UART_5ChanADC", "MVP_UART_5ChanADC.vgdbcmake", "{5DB257ED-72A5-4317-A059-19CBF5A7117E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|VisualGDB = Debug|VisualGDB
+		MinSizeRel|VisualGDB = MinSizeRel|VisualGDB
+		Release|VisualGDB = Release|VisualGDB
+		RelWithDebInfo|VisualGDB = RelWithDebInfo|VisualGDB
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5DB257ED-72A5-4317-A059-19CBF5A7117E}.Debug|VisualGDB.ActiveCfg = Debug|VisualGDB
+		{5DB257ED-72A5-4317-A059-19CBF5A7117E}.Debug|VisualGDB.Build.0 = Debug|VisualGDB
+		{5DB257ED-72A5-4317-A059-19CBF5A7117E}.MinSizeRel|VisualGDB.ActiveCfg = MinSizeRel|VisualGDB
+		{5DB257ED-72A5-4317-A059-19CBF5A7117E}.MinSizeRel|VisualGDB.Build.0 = MinSizeRel|VisualGDB
+		{5DB257ED-72A5-4317-A059-19CBF5A7117E}.Release|VisualGDB.ActiveCfg = Release|VisualGDB
+		{5DB257ED-72A5-4317-A059-19CBF5A7117E}.Release|VisualGDB.Build.0 = Release|VisualGDB
+		{5DB257ED-72A5-4317-A059-19CBF5A7117E}.RelWithDebInfo|VisualGDB.ActiveCfg = RelWithDebInfo|VisualGDB
+		{5DB257ED-72A5-4317-A059-19CBF5A7117E}.RelWithDebInfo|VisualGDB.Build.0 = RelWithDebInfo|VisualGDB
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {83C105BA-6BEC-4591-ACE8-06D63FF4EC7E}
+	EndGlobalSection
+EndGlobal
