@@ -2,14 +2,14 @@
 <MemoryUtilizationReport xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Memories>
     <MemoryUtilization>
-      <MemoryName>RAM</MemoryName>
-      <Used>2880</Used>
-      <Total>524288</Total>
+      <MemoryName>FLASH</MemoryName>
+      <Used>19352</Used>
+      <Total>19352</Total>
     </MemoryUtilization>
     <MemoryUtilization>
-      <MemoryName>FLASH</MemoryName>
-      <Used>10988</Used>
-      <Total>2097152</Total>
+      <MemoryName>RAM</MemoryName>
+      <Used>2992</Used>
+      <Total>2992</Total>
     </MemoryUtilization>
   </Memories>
 </MemoryUtilizationReport>
