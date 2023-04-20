@@ -42,14 +42,14 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "BSP::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-BSP-DEBUG-0c565aefe70169249a80.json",
+					"jsonFile" : "target-BSP-DEBUG-7089bbeaca880da18313.json",
 					"name" : "BSP",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "MVP_UART_5ChanADC::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-MVP_UART_5ChanADC-DEBUG-dd96a1e78b554b8ef471.json",
+					"jsonFile" : "target-MVP_UART_5ChanADC-DEBUG-b3109383e98560a0207a.json",
 					"name" : "MVP_UART_5ChanADC",
 					"projectIndex" : 0
 				},

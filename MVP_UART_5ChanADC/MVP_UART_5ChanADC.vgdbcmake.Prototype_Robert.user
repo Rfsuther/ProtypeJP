@@ -54,8 +54,8 @@
         <a>false</a>
       </e32>
       <e32>
-        <c>ADC2_val</c>
-        <b>com.sysprogs.types.builtin.UInt16</b>
+        <c>rxBuffer</c>
+        <b>com.sysprogs.fixed</b>
         <f>true</f>
         <e>
           <ComparisonMode>Equals</ComparisonMode>
