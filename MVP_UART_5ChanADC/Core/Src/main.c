@@ -35,10 +35,18 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
+
+//Used to Control Length of USBbuffer
 #define txBuffSize 13
 #define rxBuffSize 13
+
+//should match number of channels on ADC1 and ADC2
 #define numOfChansADC1 6
 #define numOfChansADC2 1
+
+//use this to define number of consecutive highs before reset
+#define sensrErrCntThresh 10;
+
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -51,7 +59,55 @@ TIM_HandleTypeDef htim1;
 UART_HandleTypeDef huart3;
 DMA_HandleTypeDef hdma_usart3_rx;
 
+
 /* USER CODE BEGIN PV */
+struct exoCounter
+{
+	uint8_t LLHits;
+	uint8_t LUHits;
+	uint8_t RLHits;
+	uint8_t RUHits;
+	uint8_t BdyHits;
+	uint8_t HdHits;
+};
+
+struct exoThresh
+{
+	uint8_t LLThresh;
+	uint8_t LUThresh;
+	uint8_t RLThresh;
+	uint8_t RUThresh;
+	uint8_t BdyThresh;
+	uint8_t HdThresh;
+};
+
+//Note Current State Returns the Status of the sensor since previous read. 
+// State counter tallys number of high reads since last low for fault detection
+struct exoState
+{
+	int8_t LLStateCounter;
+	int8_t LUStateCounter;
+	int8_t RLStateCounter;
+	int8_t RUStateCounter;
+	int8_t BdyStateCounter;
+	int8_t HdStateCounter;
+	int8_t LLCurrentState;
+	int8_t LUCurrentState;
+	int8_t RLCurrentState;
+	int8_t RUCurrentState;
+	int8_t BdyCurrentState;
+	int8_t HdCurrentState;
+};
+
+struct errorCode
+{
+	uint8_t sensorCode;
+	uint8_t comCode;
+};
+
+
+
+
 //ADC PVs
 volatile uint16_t Adc1Results[numOfChansADC1];
 volatile uint16_t ADC2_val = 0;
@@ -102,7 +158,43 @@ static void MX_USART3_UART_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+	
+	//Initialize EXO Structs
+	struct exoCounter myExoCounter;
+	myExoCounter.LLHits = 0;
+	myExoCounter.LUHits = 0;
+	myExoCounter.RLHits  = 0;
+	myExoCounter.RUHits = 0;
+	myExoCounter.BdyHits = 0;
+	myExoCounter.HdHits = 0;
+	
+	// Set Baseline by adjustment
+	struct exoThresh myExoThresh;
+	myExoThresh.LLThresh = 0;
+	myExoThresh.LUThresh = 0;
+	myExoThresh.RLThresh  = 0;
+	myExoThresh.RUThresh = 0;
+	myExoThresh.BdyThresh = 0;
+	myExoThresh.HdThresh = 0;
+	
 
+	struct exoState myExoState;
+	myExoState.LLStateCounter = 0;
+	myExoState.LUStateCounter = 0;
+	myExoState.RLStateCounter = 0;
+	myExoState.RUStateCounter = 0;
+	myExoState.BdyStateCounter = 0;
+	myExoState.HdStateCounter = 0;
+	
+	myExoState.LLCurrentState = 0;
+	myExoState.LUCurrentState = 0;
+	myExoState.RLCurrentState = 0;
+	myExoState.RUCurrentState = 0;
+	myExoState.BdyCurrentState = 0;
+	myExoState.HdCurrentState = 0;
+		
+	
+	
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -152,11 +244,77 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  //Update State of Robot
+	  //Reset Condition
+//	  if (PRESSEDBUTTON == 1)
+//	  {
+//		  myExoCounter.LLHits = 0;
+//		  myExoCounter.LUHits = 0;
+//		  myExoCounter.RLHits  = 0;
+//		  myExoCounter.RUHits = 0;
+//		  myExoCounter.BdyHits = 0;
+//		  myExoCounter.HdHits = 0;
+//		  HAL_Delay(500);
+//	  }
+//	  else if(ANY part in error state)
+//	  {
+//		  
+//	  }
+//	  else //check State of punches
+//	  {
+//		  //LL handeler
+//		  if ((myExoState.LLCurrentState == 1) && (myExoState.LLStateCounter == 0))
+//		  {
+//			  //
+//			  myExoCounter.LLHits += 1;
+//			  myExoState.LLStateCounter += 1; 
+//		  }
+//		  //Entered Error State Must Reset System
+//		  else if(myExoState.LLStateCounter > sensrErrCntThresh)
+//		  {
+//			  myExoState.LLStateCounter = -1;			  
+//		  }
+//	  }
+//			  
+//			  
+//			  
+//			  
+//		  myExoState.LLStateCounter = 0;
+//		  myExoState.LUStateCounter = 0;
+//		  myExoState.RLStateCounter = 0;
+//		  myExoState.RUStateCounter = 0;
+//		  myExoState.BdyStateCounter = 0;
+//		  myExoState.HdStateCounter = 0;
+//		  myExoState.LLCurrentState = 0;
+//		  myExoState.LUCurrentState = 0;
+//		  myExoState.RLCurrentState = 0;
+//		  myExoState.RUCurrentState = 0;
+//		  myExoState.BdyCurrentState = 0;
+//		  myExoState.HdCurrentState = 0;
+//			  
+//			  
+//			  
+//			  
+//			  
+//			  
+//			  
+//			  
+//			  
+//			  
+//			  
+//			  
+//			  
+//			  
+//			  
+//	  }
+//			
+//	  
 	  HAL_Delay(500);
 	  txStatus = HAL_UART_Transmit(&huart3, txBuffer, sizeof(txBuffer) / sizeof(txBuffer[0]), 100);
 	  //rxStatus = HAL_UART_Receive(&huart3, rxBuffer, sizeof(rxBuffer) / sizeof(rxBuffer[0]), 500);
 	if(txStatus != HAL_OK)
 		Error_Handler();
+	
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

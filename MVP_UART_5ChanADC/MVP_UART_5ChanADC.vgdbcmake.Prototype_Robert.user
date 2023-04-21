@@ -73,7 +73,80 @@
       </a>
       <a>
         <a>com.sysprogs.SpecificVariables</a>
-        <b />
+        <b>
+          <e32>
+            <c>Adc1Results[0]</c>
+            <b>com.sysprogs.types.builtin.UInt16</b>
+            <f>true</f>
+            <e>
+              <ComparisonMode>Equals</ComparisonMode>
+              <Enabled>false</Enabled>
+            </e>
+            <h>true</h>
+            <g>false</g>
+            <a>false</a>
+          </e32>
+          <e32>
+            <c>Adc1Results[1]</c>
+            <b>com.sysprogs.types.builtin.UInt16</b>
+            <f>true</f>
+            <e>
+              <ComparisonMode>Equals</ComparisonMode>
+              <Enabled>false</Enabled>
+            </e>
+            <h>true</h>
+            <g>false</g>
+            <a>false</a>
+          </e32>
+          <e32>
+            <c>Adc1Results[2]</c>
+            <b>com.sysprogs.types.builtin.UInt16</b>
+            <f>true</f>
+            <e>
+              <ComparisonMode>Equals</ComparisonMode>
+              <Enabled>false</Enabled>
+            </e>
+            <h>true</h>
+            <g>false</g>
+            <a>false</a>
+          </e32>
+          <e32>
+            <c>Adc1Results[3]</c>
+            <b>com.sysprogs.types.builtin.UInt16</b>
+            <f>true</f>
+            <e>
+              <ComparisonMode>Equals</ComparisonMode>
+              <Enabled>false</Enabled>
+            </e>
+            <h>true</h>
+            <g>false</g>
+            <a>false</a>
+          </e32>
+          <e32>
+            <c>Adc1Results[4]</c>
+            <b>com.sysprogs.types.builtin.UInt16</b>
+            <f>true</f>
+            <e>
+              <ComparisonMode>Equals</ComparisonMode>
+              <Enabled>false</Enabled>
+            </e>
+            <h>true</h>
+            <g>false</g>
+            <a>false</a>
+          </e32>
+          <e32>
+            <c>Adc1Results[5]</c>
+            <b>com.sysprogs.types.builtin.UInt16</b>
+            <f>true</f>
+            <e>
+              <ComparisonMode>Equals</ComparisonMode>
+              <Enabled>false</Enabled>
+            </e>
+            <h>true</h>
+            <g>false</g>
+            <a>false</a>
+          </e32>
+        </b>
       </a>
     </b>
     <c>
