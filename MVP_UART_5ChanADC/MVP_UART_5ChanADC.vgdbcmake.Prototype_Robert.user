@@ -111,11 +111,46 @@
         <g>true</g>
         <a>false</a>
       </e32>
+      <e32>
+        <c>txBuffer1</c>
+        <f>true</f>
+        <e>
+          <ComparisonMode>Equals</ComparisonMode>
+          <Enabled>false</Enabled>
+        </e>
+        <h>false</h>
+        <g>false</g>
+        <a>false</a>
+      </e32>
+      <e32>
+        <c>txBuffer2</c>
+        <f>true</f>
+        <e>
+          <ComparisonMode>Equals</ComparisonMode>
+          <Enabled>false</Enabled>
+        </e>
+        <h>false</h>
+        <g>false</g>
+        <a>false</a>
+      </e32>
     </e>
     <b>
       <a>
         <a>com.sysprogs.AllGlobals</a>
-        <b />
+        <b>
+          <e32>
+            <c>txBuffer</c>
+            <b>com.sysprogs.fixed</b>
+            <f>true</f>
+            <e>
+              <ComparisonMode>Equals</ComparisonMode>
+              <Enabled>false</Enabled>
+            </e>
+            <h>false</h>
+            <g>false</g>
+            <a>false</a>
+          </e32>
+        </b>
       </a>
       <a>
         <a>com.sysprogs.SpecificVariables</a>
@@ -123,7 +158,7 @@
       </a>
     </b>
     <c>
-      <b>SpecificVariables</b>
+      <b>AllGlobals</b>
       <a>false</a>
     </c>
     <Suggestions />

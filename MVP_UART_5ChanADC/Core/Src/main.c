@@ -37,7 +37,7 @@
 /* USER CODE BEGIN PM */
 
 //Used to Control Length of USBbuffer
-#define txBuffSize 13
+#define txBuffSize 8
 #define rxBuffSize 13
 
 //should match number of channels on ADC1 and ADC2
@@ -84,12 +84,14 @@ struct errorCode
 //ADC PVs
 volatile uint16_t Adc1Results[numOfChansADC1];
 volatile uint16_t ADC2_val = 0;
-
+uint16_t Adc1Loop[numOfChansADC1] = {0};
+uint16_t ADC2_LoopVal = 0;
 
 //UART PVs
 //use this to define number of consecutive highs before reset
-uint16_t sensrErrCntThresh = 100;
-uint8_t txBuffer[txBuffSize] = { 'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd', '\r', '\n' };
+uint16_t sensrErrCntThresh = 10000;
+//uint8_t txBuffer[txBuffSize] = { 'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd', '\r', '\n' };
+uint8_t txBuffer[txBuffSize] = {1,2,3,4,5,6,7,8};
 uint8_t rxBuffer[rxBuffSize];
 uint8_t rxStorageBuffer[rxBuffSize];
 
@@ -185,7 +187,6 @@ int main(void)
 
 	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_13, GPIO_PIN_RESET);
   /* USER CODE END 2 */
-
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	int loop;
@@ -244,7 +245,14 @@ int main(void)
 	  }
 			
 //	  
-	  HAL_Delay(500);
+	  HAL_Delay(450);
+//	  uint16_t txBuffer1[txBuffSize] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, '\r', '\n' };
+//	  uint8_t txBuffer2[txBuffSize];
+//	  for (int i = 0; i < txBuffSize; i++)
+//	  {
+//		  txBuffer[] = exoCounter[];
+//	  }
+//	  
 	  txStatus = HAL_UART_Transmit(&huart3, txBuffer, sizeof(txBuffer) / sizeof(txBuffer[0]), 100);
 	  //rxStatus = HAL_UART_Receive(&huart3, rxBuffer, sizeof(rxBuffer) / sizeof(rxBuffer[0]), 500);
 	if(txStatus != HAL_OK)
