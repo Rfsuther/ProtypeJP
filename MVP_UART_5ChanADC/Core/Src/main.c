@@ -70,10 +70,10 @@ enum Sensor
 };
 
 
-uint8_t exoCounter[numberOfLimbs];
-uint16_t exoThresh[numberOfLimbs];
-int8_t exoCurrentState[numberOfLimbs];
-uint16_t exoStateCounter[numberOfLimbs];
+static uint8_t exoCounter[numberOfLimbs];
+static uint16_t exoThresh[numberOfLimbs];
+static int8_t exoCurrentState[numberOfLimbs];
+static uint16_t exoStateCounter[numberOfLimbs];
 struct errorCode
 {
 	uint8_t sensorCode;
@@ -142,12 +142,9 @@ int main(void)
 	struct errorCode myErrorCode = ReseterrorCode();
 	
   /* USER CODE END 1 */
-
   /* MCU Configuration--------------------------------------------------------*/
-
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
-
   /* USER CODE BEGIN Init */
 
   /* USER CODE END Init */
@@ -196,9 +193,12 @@ int main(void)
 	  //Update State of Controller
 	  
 	  //Get adc valus
-	  
+	  for (int i = 0; i > numOfChansADC1; i++)
+	  {
+		  Adc1Loop[i] = Adc1Results[i];
+	  }
 	  //Get PB values
-	  
+	  GPIO_
 	  //Get UART values
 	  
 	  uint8_t resetFlag = 0; //repalce this
@@ -245,14 +245,13 @@ int main(void)
 	  }
 			
 //	  
-	  HAL_Delay(450);
-//	  uint16_t txBuffer1[txBuffSize] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, '\r', '\n' };
-//	  uint8_t txBuffer2[txBuffSize];
-//	  for (int i = 0; i < txBuffSize; i++)
-//	  {
-//		  txBuffer[] = exoCounter[];
-//	  }
 //	  
+	  HAL_Delay(450);
+	  	  for (int i = 0; i < numberOfLimbs; i++)
+	  {
+		  txBuffer[i] = (uint8_t) exoCounter[i];
+	  }
+	  
 	  txStatus = HAL_UART_Transmit(&huart3, txBuffer, sizeof(txBuffer) / sizeof(txBuffer[0]), 100);
 	  //rxStatus = HAL_UART_Receive(&huart3, rxBuffer, sizeof(rxBuffer) / sizeof(rxBuffer[0]), 500);
 	if(txStatus != HAL_OK)
