@@ -43,9 +43,7 @@
 //should match number of channels on ADC1 and ADC2
 #define numOfChansADC1 6
 #define numOfChansADC2 1
-
-//use this to define number of consecutive highs before reset
-#define sensrErrCntThresh 10;
+#define numberOfLimbs 6
 
 /* USER CODE END PM */
 
@@ -60,44 +58,22 @@ UART_HandleTypeDef huart3;
 DMA_HandleTypeDef hdma_usart3_rx;
 
 /* USER CODE BEGIN PV */
-struct exoCounter
+
+enum Sensor
 {
-	uint8_t LLHits;
-	uint8_t LUHits;
-	uint8_t RLHits;
-	uint8_t RUHits;
-	uint8_t BdyHits;
-	uint8_t HdHits;
+	LL,
+	LU,
+	RL,
+	RU,
+	Bdy,
+	Hd,
 };
 
-struct exoThresh
-{
-	uint8_t LLThresh;
-	uint8_t LUThresh;
-	uint8_t RLThresh;
-	uint8_t RUThresh;
-	uint8_t BdyThresh;
-	uint8_t HdThresh;
-};
 
-//Note Current State Returns the Status of the sensor since previous read. 
-// State counter tallys number of high reads since last low for fault detection
-struct exoState
-{
-	int8_t LLStateCounter;
-	int8_t LUStateCounter;
-	int8_t RLStateCounter;
-	int8_t RUStateCounter;
-	int8_t BdyStateCounter;
-	int8_t HdStateCounter;
-	int8_t LLCurrentState;
-	int8_t LUCurrentState;
-	int8_t RLCurrentState;
-	int8_t RUCurrentState;
-	int8_t BdyCurrentState;
-	int8_t HdCurrentState;
-};
-
+uint8_t exoCounter[numberOfLimbs];
+uint16_t exoThresh[numberOfLimbs];
+int8_t exoCurrentState[numberOfLimbs];
+uint16_t exoStateCounter[numberOfLimbs];
 struct errorCode
 {
 	uint8_t sensorCode;
@@ -110,8 +86,9 @@ volatile uint16_t Adc1Results[numOfChansADC1];
 volatile uint16_t ADC2_val = 0;
 
 
-
 //UART PVs
+//use this to define number of consecutive highs before reset
+uint16_t sensrErrCntThresh = 100;
 uint8_t txBuffer[txBuffSize] = { 'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd', '\r', '\n' };
 uint8_t rxBuffer[rxBuffSize];
 uint8_t rxStorageBuffer[rxBuffSize];
@@ -138,10 +115,9 @@ static void MX_USART3_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
 //Three reset functions for createing structs
-struct exoState ResetexoState(void);
+void resetExoHitVars();
 struct errorCode ReseterrorCode(void);
-struct exoCounter ResetexoCounter(void);
-struct exoThresh ResetexoTresh(void);
+
 
 /* USER CODE END PFP */
 
@@ -158,12 +134,10 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 	
-	//Initialize EXO Structs ( should be 4)
-	struct exoCounter myExoCounter = ResetexoCounter();
-	struct exoThresh myExoThresh = ResetexoTresh(); // Set Baseline by adjustment
-	struct exoState myExoState = ResetexoState();
+	//Initialize EXO arrays ( should be 5)
+	resetExoHitVars();
+	memset(exoThresh, 0xFF, sizeof(exoThresh)*sizeof(exoThresh[0])); //Max out threshold which can be lowered
 	struct errorCode myErrorCode = ReseterrorCode();
-	
 	
   /* USER CODE END 1 */
 
@@ -192,6 +166,7 @@ int main(void)
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
 
+	//Start Periferals
 	if (HAL_ADC_Start_DMA(&hadc1, (uint32_t *)Adc1Results, sizeof(Adc1Results) / sizeof(Adc1Results[0])) != HAL_OK)
 		Error_Handler();	
 	if (HAL_ADC_Start(&hadc2) != HAL_OK)
@@ -200,6 +175,7 @@ int main(void)
 		Error_Handler();
 	if (HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1) != HAL_OK)
 		Error_Handler();
+	
 	//ConfigureDMA
 	rxStatus = HAL_UARTEx_ReceiveToIdle_DMA(&huart3, rxBuffer, sizeof(rxBuffer) / sizeof(rxBuffer[0]));
 	if (rxStatus != HAL_OK)
@@ -212,52 +188,59 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+	int loop;
   while (1)
   {
-	  //Update State of Robot
+	  
+	  //Update State of Controller
+	  
+	  //Get adc valus
+	  
+	  //Get PB values
+	  
+	  //Get UART values
+	  
+	  uint8_t resetFlag = 0; //repalce this
 	  //Reset Condition
-	  if (PRESSEDBUTTON == 1)
+	  if (resetFlag == 1)
 	  {
-		  //reset exoCounter and state
-		  myExoState = ResetexoState();
-		  myExoCounter = ResetexoCounter();
+		  //reset exoCounter and state varibles
+		  resetExoHitVars();
 		  HAL_Delay(500);
 	  }
-	  else if(ANY part in error state)
+	  else if(0) //error flag goes here
 	  {
-		  
+		  while (1)
+		  {
+			  //TODO add error Trap UART
+			  __NOP();
+		  }
 	  }
 	  else //check State of punches
 	  {
-		  //LL handeler
-		  if ((myExoState.LLCurrentState == 1) && (myExoState.LLStateCounter == 0))
+		  // iterate across sensors and store valus sensor error flag is -1 on exoCurrent state which is handeled above
+		  for (uint16_t sensorPos = 0; sensorPos < numberOfLimbs; sensorPos++)
 		  {
-			  //
-			  myExoCounter.LLHits += 1;
-			  myExoState.LLStateCounter += 1; 
+			  if ((exoCurrentState[sensorPos] == 1) && (exoStateCounter[sensorPos] == 0))
+			  {
+				  //
+				  exoCounter[sensorPos] += 1;
+				  exoStateCounter[sensorPos] += 1; 
+			  }
+			  //Entered Error State Must Reset System
+			  else if((exoCurrentState[sensorPos] == 1) && (exoStateCounter[sensorPos] > sensrErrCntThresh))
+			  {
+				  exoCurrentState[sensorPos] = -1;			  
+			  }
+			  else if(exoCurrentState[sensorPos] == 0)
+			  {
+				  exoStateCounter[sensorPos] = 0; 
+			  }
+			  else
+			  {
+				  __NOP(); //Illegal State;
+			  }
 		  }
-		  //Entered Error State Must Reset System
-		  else if(myExoState.LLStateCounter > sensrErrCntThresh)
-		  {
-			  myExoState.LLStateCounter = -1;			  
-		  }
-	  }
-			  
-			  
-			  
-			  
-		  myExoState.LLStateCounter = 0;
-		  myExoState.LUStateCounter = 0;
-		  myExoState.RLStateCounter = 0;
-		  myExoState.RUStateCounter = 0;
-		  myExoState.BdyStateCounter = 0;
-		  myExoState.HdStateCounter = 0;
-		  myExoState.LLCurrentState = 0;
-		  myExoState.LUCurrentState = 0;
-		  myExoState.RLCurrentState = 0;
-		  myExoState.RUCurrentState = 0;
-		  myExoState.BdyCurrentState = 0;
-		  myExoState.HdCurrentState = 0;
 	  }
 			
 //	  
@@ -724,57 +707,18 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 //functions
-
-
-struct exoState ResetexoState(void)
-{
-	struct exoState inStruct;
-	inStruct.LLStateCounter = 0;
-	inStruct.LUStateCounter = 0;
-	inStruct.RLStateCounter = 0;
-	inStruct.RUStateCounter = 0;
-	inStruct.BdyStateCounter = 0;
-	inStruct.HdStateCounter = 0;
-	
-	inStruct.LLCurrentState = 0;
-	inStruct.LUCurrentState = 0;
-	inStruct.RLCurrentState = 0;
-	inStruct.RUCurrentState = 0;
-	inStruct.BdyCurrentState = 0;
-	inStruct.HdCurrentState = 0;
-	return inStruct;
-};
 struct errorCode ReseterrorCode(void)
 { 
-	
+		
 };
-struct exoCounter ResetexoCounter(void) { 
-	struct exoCounter inStruct;
-	inStruct.LLHits = 0;
-	inStruct.LUHits = 0;
-	inStruct.RLHits  = 0;
-	inStruct.RUHits = 0;
-	inStruct.BdyHits = 0;
-	inStruct.HdHits = 0;
-	return inStruct;
-}
-struct exoThresh ResetexoTresh(void)
+
+//function reset exoCounter, exoThresh, exoCurrentState
+void resetExoHitVars()
 {
-	struct exoThresh inStruct;
-	inStruct.LLThresh = 0;
-	inStruct.LUThresh = 0;
-	inStruct.RLThresh  = 0;
-	inStruct.RUThresh = 0;
-	inStruct.BdyThresh = 0;
-	inStruct.HdThresh = 0;
-	return inStruct;
+	memset(exoCounter, 0, sizeof(exoCounter)*sizeof(exoCounter[0]));
+	memset(exoCurrentState, 0, sizeof(exoCurrentState)* sizeof(exoCurrentState[0])); // Set Baseline by adjustment
+	memset(exoStateCounter, 0, sizeof(exoStateCounter)*sizeof(exoStateCounter[0]));
 }
-
-
-
-
-
-
 
 
 //Modified HAL functions
