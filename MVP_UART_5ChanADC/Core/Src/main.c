@@ -87,6 +87,12 @@ volatile uint16_t ADC2_val = 0;
 uint16_t Adc1Loop[numOfChansADC1] = {0};
 uint16_t ADC2_LoopVal = 0;
 
+//GPIO PVs
+uint8_t buttonStatus;
+uint8_t buttonPrevious;
+//
+
+
 //UART PVs
 //use this to define number of consecutive highs before reset
 uint16_t sensrErrCntThresh = 10000;
@@ -198,7 +204,7 @@ int main(void)
 		  Adc1Loop[i] = Adc1Results[i];
 	  }
 	  //Get PB values
-	  GPIO_
+	  buttonStatus = HAL_GPIO_ReadPin(PushB1_GPIO_Port, PushB1_Pin);
 	  //Get UART values
 	  
 	  uint8_t resetFlag = 0; //repalce this
