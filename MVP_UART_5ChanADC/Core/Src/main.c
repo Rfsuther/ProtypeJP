@@ -80,6 +80,7 @@ struct errorCode
 	uint8_t comCode;
 };
 
+enum Sensor selectADC = LL;
 
 //ADC PVs
 volatile uint16_t Adc1Results[numOfChansADC1];
@@ -88,8 +89,8 @@ uint16_t Adc1Loop[numOfChansADC1] = {0};
 uint16_t ADC2_LoopVal = 0;
 
 //GPIO PVs
-uint8_t buttonStatus;
-uint8_t buttonPrevious;
+uint8_t buttonStatus = 0;
+uint8_t buttonPrevious = 0;
 //
 
 
@@ -195,7 +196,6 @@ int main(void)
 	int loop;
   while (1)
   {
-	  
 	  //Update State of Controller
 	  
 	  //Get adc valus
@@ -203,9 +203,28 @@ int main(void)
 	  {
 		  Adc1Loop[i] = Adc1Results[i];
 	  }
+	  ADC2_LoopVal = ADC2_val;
 	  //Get PB values
 	  buttonStatus = HAL_GPIO_ReadPin(PushB1_GPIO_Port, PushB1_Pin);
 	  //Get UART values
+	  
+	  
+	  	  //update ADC threshold values
+	  if (buttonStatus == 1)
+	  {
+		  //increment channel counter
+		  if (selectADC >= Hd)
+		  {
+			  selectADC = LL;
+		  } 
+		  else
+		  {
+			  selectADC += 1;
+		  }
+		  // update threshold value
+		  exoThresh[selectADC] = ADC2_LoopVal;
+		  //TODO reset error state of sensor on value change (alows for retime reset and adjustments
+	  }
 	  
 	  uint8_t resetFlag = 0; //repalce this
 	  //Reset Condition
@@ -249,9 +268,10 @@ int main(void)
 			  }
 		  }
 	  }
-			
+
 //	  
 //	  
+	  //Send results to master
 	  HAL_Delay(450);
 	  	  for (int i = 0; i < numberOfLimbs; i++)
 	  {
