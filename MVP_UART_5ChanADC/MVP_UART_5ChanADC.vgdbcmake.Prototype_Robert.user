@@ -63,7 +63,7 @@
           <Enabled>false</Enabled>
         </e>
         <h>false</h>
-        <g>false</g>
+        <g>true</g>
         <a>false</a>
       </e32>
       <e32>
@@ -112,6 +112,18 @@
         <g>true</g>
         <a>false</a>
       </e32>
+      <e32>
+        <c>rxStorageBuffer</c>
+        <b>com.sysprogs.fixed</b>
+        <f>true</f>
+        <e>
+          <ComparisonMode>Equals</ComparisonMode>
+          <Enabled>false</Enabled>
+        </e>
+        <h>false</h>
+        <g>true</g>
+        <a>false</a>
+      </e32>
     </e>
     <b>
       <a>
@@ -120,56 +132,7 @@
       </a>
       <a>
         <a>com.sysprogs.SpecificVariables</a>
-        <b>
-          <e32>
-            <c>Adc1Loop[0]</c>
-            <b>com.sysprogs.types.builtin.UInt16</b>
-            <f>true</f>
-            <e>
-              <ComparisonMode>Equals</ComparisonMode>
-              <Enabled>false</Enabled>
-            </e>
-            <h>true</h>
-            <g>false</g>
-            <a>false</a>
-          </e32>
-          <e32>
-            <c>Adc1Loop[1]</c>
-            <b>com.sysprogs.types.builtin.UInt16</b>
-            <f>true</f>
-            <e>
-              <ComparisonMode>Equals</ComparisonMode>
-              <Enabled>false</Enabled>
-            </e>
-            <h>true</h>
-            <g>false</g>
-            <a>false</a>
-          </e32>
-          <e32>
-            <c>Adc1Loop[2]</c>
-            <b>com.sysprogs.types.builtin.UInt16</b>
-            <f>true</f>
-            <e>
-              <ComparisonMode>Equals</ComparisonMode>
-              <Enabled>false</Enabled>
-            </e>
-            <h>true</h>
-            <g>false</g>
-            <a>false</a>
-          </e32>
-          <e32>
-            <c>Adc1Loop[3]</c>
-            <b>com.sysprogs.types.builtin.UInt16</b>
-            <f>true</f>
-            <e>
-              <ComparisonMode>Equals</ComparisonMode>
-              <Enabled>false</Enabled>
-            </e>
-            <h>true</h>
-            <g>false</g>
-            <a>false</a>
-          </e32>
-        </b>
+        <b />
       </a>
     </b>
     <c>

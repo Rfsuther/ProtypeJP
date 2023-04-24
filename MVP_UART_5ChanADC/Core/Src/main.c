@@ -100,6 +100,7 @@ uint16_t sensrErrCntThresh = 200;
 //uint8_t txBuffer[txBuffSize] = { 'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd', '\r', '\n' };
 uint8_t txBuffer[txBuffSize] = {1,2,3,4,5,6,7,8};
 uint8_t rxBuffer[rxBuffSize];
+
 uint8_t rxStorageBuffer[rxBuffSize];
 
 //DEBUGING Vars
@@ -199,7 +200,7 @@ int main(void)
 
 	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_13, GPIO_PIN_RESET);
 	//Base ADC Threshholds (need to calibrate final version
-	exoThresh[0] =  1400; exoThresh[1] =  1400; exoThresh[2] =  950; exoThresh[3] =  52; exoThresh[4] =  3500; exoThresh[5] =  3500; 
+	exoThresh[0] =  1400; exoThresh[1] =  1400; exoThresh[2] =  1100; exoThresh[3] =  52; exoThresh[4] =  3500; exoThresh[5] =  3500; 
 	
   /* USER CODE END 2 */
   /* Infinite loop */
@@ -261,11 +262,18 @@ int main(void)
 	  
 	  uint8_t resetFlag = 0; //repalce this
 	  //Reset Condition
+	  
+	  if (rxStorageBuffer[0] == 'r')
+	  {
+		  resetFlag = 1;
+		  rxStorageBuffer[0] = 0;
+	  }
 	  if (resetFlag == 1)
 	  {
 		  //reset exoCounter and state varibles
 		  resetExoHitVars();
 		  HAL_Delay(500);
+		  resetFlag = 0;
 	  }
 	  else if(0) //error flag goes here
 	  {
@@ -310,7 +318,7 @@ int main(void)
 //	  
 //	  
 	  //Send results to master
-	  HAL_Delay(50);
+	  HAL_Delay(100);
 	  	  for (int i = 0; i < numberOfLimbs; i++)
 	  {
 		  txBuffer[i] = (uint8_t) exoCounter[i];
