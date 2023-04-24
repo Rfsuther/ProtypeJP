@@ -143,7 +143,8 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 	
-	//Initialize EXO arrays ( should be 5)
+	//Initialize EXO arrays ( should be 5
+	
 	resetExoHitVars();
 	uint8_t Adbug1 = sizeof(exoThresh);
 	//set max threshold for all channels
@@ -197,10 +198,14 @@ int main(void)
 
 
 	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_13, GPIO_PIN_RESET);
+	//Base ADC Threshholds (need to calibrate final version
+	exoThresh[0] =  1400; exoThresh[1] =  1400; exoThresh[2] =  950; exoThresh[3] =  52; exoThresh[4] =  3500; exoThresh[5] =  3500; 
+	
   /* USER CODE END 2 */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	int loop;
+	HAL_Delay(2000);
   while (1)
   {
 	  //Update State of Controller
@@ -231,7 +236,7 @@ int main(void)
 		  // update threshold value
 		  exoThresh[selectADC] = ADC2_LoopVal;
 		  buttonStatus = 0;
-		  HAL_Delay(200);
+		  HAL_Delay(100);
 		  //TODO reset error state of sensor on value change (alows for retime reset and adjustments
 	  }
 		//compare ADC to Thresh and count hits
@@ -305,7 +310,7 @@ int main(void)
 //	  
 //	  
 	  //Send results to master
-	  HAL_Delay(200);
+	  HAL_Delay(50);
 	  	  for (int i = 0; i < numberOfLimbs; i++)
 	  {
 		  txBuffer[i] = (uint8_t) exoCounter[i];
