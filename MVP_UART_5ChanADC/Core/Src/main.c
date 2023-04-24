@@ -31,10 +31,6 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-/* USER CODE END PD */
-
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
 
 //Used to Control Length of USBbuffer
 #define txBuffSize 8
@@ -44,7 +40,10 @@
 #define numOfChansADC1 6
 #define numOfChansADC2 1
 #define numberOfLimbs 6
+/* USER CODE END PD */
 
+/* Private macro -------------------------------------------------------------*/
+/* USER CODE BEGIN PM */
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -93,7 +92,6 @@ uint8_t buttonStatus = 0;
 uint8_t buttonPrevious = 0;
 //
 
-
 //UART PVs
 //use this to define number of consecutive highs before reset
 uint16_t sensrErrCntThresh = 200;
@@ -128,7 +126,7 @@ static void MX_USART3_UART_Init(void);
 void resetExoHitVars();
 struct errorCode ReseterrorCode(void);
 
-
+void calibrateSensor();
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -153,7 +151,6 @@ int main(void)
 	{
 		exoThresh[i] = 0xFFFF;
 	}
-	
 	
 	struct errorCode myErrorCode = ReseterrorCode();
 	
@@ -200,7 +197,12 @@ int main(void)
 
 	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_13, GPIO_PIN_RESET);
 	//Base ADC Threshholds (need to calibrate final version
-	exoThresh[0] =  1400; exoThresh[1] =  1400; exoThresh[2] =  1100; exoThresh[3] =  380; exoThresh[4] =  3500; exoThresh[5] =  3500; 
+	exoThresh[0] =  1500; exoThresh[1] =  2450; exoThresh[2] =  950; exoThresh[3] =  250; exoThresh[4] =  3500; exoThresh[5] =  3500; 
+	//TODO add auto calibrate
+	calibrateSensor();
+	
+	
+	
 	
   /* USER CODE END 2 */
   /* Infinite loop */
@@ -212,14 +214,16 @@ int main(void)
 	  //Update State of Controller
 	  
 	  //Get adc valus
-	  for (int i = 0; i < numOfChansADC1; i++)
+	  for (enum Sensor i = 0; i < numOfChansADC1; i++)
 		  {
 			  Adc1Loop[i] = Adc1Results[i];
 		  }
 	  ADC2_LoopVal = ADC2_val;
 	  //Get PB values
-	  buttonStatus = HAL_GPIO_ReadPin(PushB1_GPIO_Port, PushB1_Pin);
+	  
 	  //Get UART values
+	  buttonStatus = HAL_GPIO_ReadPin(PushB1_GPIO_Port, PushB1_Pin);
+	  
 	  
 	  
 	  	  //update ADC threshold values
@@ -799,6 +803,32 @@ void resetExoHitVars()
 	memset(exoStateCounter, 0, sizeof(exoStateCounter)*sizeof(exoStateCounter[0]));
 }
 
+void calibrateSensor()
+{
+	uint16_t channelMax[numberOfLimbs] = { 0 };
+	uint16_t tempChannelStorage = 0;
+	//obtain max values after running loop jn times
+	for (uint16_t j = 0; j < 5000; j++)
+	{
+		for (enum Sensor i = 0; i < numOfChansADC1; i++)
+		{
+			tempChannelStorage = Adc1Results[i];
+			if (tempChannelStorage  > channelMax[i])
+			{
+				channelMax[i] = tempChannelStorage;
+			}
+		}
+		HAL_Delay(1);
+	}
+	
+	
+	//update threshhold
+	for (enum Sensor sensorPos = 0; sensorPos < numberOfLimbs; sensorPos++)
+	{
+	
+		exoThresh[sensorPos] = (uint16_t)((double)channelMax[sensorPos] * 1.3);
+	}	  
+}
 
 //Modified HAL functions
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)

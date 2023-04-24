@@ -39,7 +39,7 @@
           <Enabled>false</Enabled>
         </e>
         <h>false</h>
-        <g>true</g>
+        <g>false</g>
         <a>false</a>
       </e32>
       <e32>
@@ -86,7 +86,7 @@
           <Enabled>false</Enabled>
         </e>
         <h>false</h>
-        <g>false</g>
+        <g>true</g>
         <a>false</a>
       </e32>
       <e32>
