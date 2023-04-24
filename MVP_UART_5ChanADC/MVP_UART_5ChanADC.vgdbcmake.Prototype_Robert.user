@@ -12,6 +12,7 @@
     <MaskInterruptsWhileStepping>false</MaskInterruptsWhileStepping>
     <MemoryWindowPreferences>
       <MemoryWindowPreferences>
+        <ExpressionHistory />
         <SymbolicMode>true</SymbolicMode>
         <TakeAddressMode>false</TakeAddressMode>
         <Format>
@@ -20,7 +21,7 @@
           <TextFormat>ANSI</TextFormat>
         </Format>
         <LiveMemorySettings>
-          <Enabled>false</Enabled>
+          <Enabled>true</Enabled>
           <BreakOnChanges>false</BreakOnChanges>
           <AutoRefresh>false</AutoRefresh>
           <RefreshTimeout>0</RefreshTimeout>
@@ -31,7 +32,7 @@
     </MemoryWindowPreferences>
     <e>
       <e32>
-        <c>Adc1Results</c>
+        <c>exoThresh</c>
         <f>true</f>
         <e>
           <ComparisonMode>Equals</ComparisonMode>
@@ -42,8 +43,8 @@
         <a>false</a>
       </e32>
       <e32>
-        <c>ADC2_val</c>
-        <b>com.sysprogs.types.builtin.UInt16</b>
+        <c>selectADC</c>
+        <b>com.sysprogs.types.builtin.UInt8</b>
         <f>true</f>
         <e>
           <ComparisonMode>Equals</ComparisonMode>
@@ -51,18 +52,6 @@
         </e>
         <h>false</h>
         <g>false</g>
-        <a>false</a>
-      </e32>
-      <e32>
-        <c>rxBuffer</c>
-        <b>com.sysprogs.fixed</b>
-        <f>true</f>
-        <e>
-          <ComparisonMode>Equals</ComparisonMode>
-          <Enabled>false</Enabled>
-        </e>
-        <h>false</h>
-        <g>true</g>
         <a>false</a>
       </e32>
       <e32>
@@ -74,45 +63,12 @@
           <Enabled>false</Enabled>
         </e>
         <h>false</h>
-        <g>true</g>
+        <g>false</g>
         <a>false</a>
       </e32>
       <e32>
-        <c>exoThresh</c>
-        <f>true</f>
-        <e>
-          <ComparisonMode>Equals</ComparisonMode>
-          <Enabled>false</Enabled>
-        </e>
-        <h>false</h>
-        <g>true</g>
-        <a>false</a>
-      </e32>
-      <e32>
-        <c>exoCurrentState</c>
-        <b>com.sysprogs.fixed</b>
-        <f>true</f>
-        <e>
-          <ComparisonMode>Equals</ComparisonMode>
-          <Enabled>false</Enabled>
-        </e>
-        <h>false</h>
-        <g>true</g>
-        <a>false</a>
-      </e32>
-      <e32>
-        <c>exoStateCounter</c>
-        <f>true</f>
-        <e>
-          <ComparisonMode>Equals</ComparisonMode>
-          <Enabled>false</Enabled>
-        </e>
-        <h>false</h>
-        <g>true</g>
-        <a>false</a>
-      </e32>
-      <e32>
-        <c>txBuffer1</c>
+        <c>ADC2_LoopVal</c>
+        <b>com.sysprogs.types.builtin.UInt16</b>
         <f>true</f>
         <e>
           <ComparisonMode>Equals</ComparisonMode>
@@ -123,7 +79,30 @@
         <a>false</a>
       </e32>
       <e32>
-        <c>txBuffer2</c>
+        <c>exoStateCounter</c>
+        <f>true</f>
+        <e>
+          <ComparisonMode>Equals</ComparisonMode>
+          <Enabled>false</Enabled>
+        </e>
+        <h>false</h>
+        <g>false</g>
+        <a>false</a>
+      </e32>
+      <e32>
+        <c>Adc1Loop</c>
+        <f>true</f>
+        <e>
+          <ComparisonMode>Equals</ComparisonMode>
+          <Enabled>false</Enabled>
+        </e>
+        <h>false</h>
+        <g>false</g>
+        <a>false</a>
+      </e32>
+      <e32>
+        <c>exoCurrentState</c>
+        <b>com.sysprogs.fixed</b>
         <f>true</f>
         <e>
           <ComparisonMode>Equals</ComparisonMode>
@@ -137,20 +116,7 @@
     <b>
       <a>
         <a>com.sysprogs.AllGlobals</a>
-        <b>
-          <e32>
-            <c>txBuffer</c>
-            <b>com.sysprogs.fixed</b>
-            <f>true</f>
-            <e>
-              <ComparisonMode>Equals</ComparisonMode>
-              <Enabled>false</Enabled>
-            </e>
-            <h>false</h>
-            <g>false</g>
-            <a>false</a>
-          </e32>
-        </b>
+        <b />
       </a>
       <a>
         <a>com.sysprogs.SpecificVariables</a>

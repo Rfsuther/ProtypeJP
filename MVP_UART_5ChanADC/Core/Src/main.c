@@ -70,10 +70,10 @@ enum Sensor
 };
 
 
-static uint8_t exoCounter[numberOfLimbs];
-static uint16_t exoThresh[numberOfLimbs];
-static int8_t exoCurrentState[numberOfLimbs];
-static uint16_t exoStateCounter[numberOfLimbs];
+static uint8_t exoCounter[numberOfLimbs] = { 0 };
+static uint16_t exoThresh[numberOfLimbs] = { 0 };
+static int8_t exoCurrentState[numberOfLimbs] = { 0 };
+static uint16_t exoStateCounter[numberOfLimbs] = { 0 };
 struct errorCode
 {
 	uint8_t sensorCode;
@@ -96,7 +96,7 @@ uint8_t buttonPrevious = 0;
 
 //UART PVs
 //use this to define number of consecutive highs before reset
-uint16_t sensrErrCntThresh = 10000;
+uint16_t sensrErrCntThresh = 200;
 //uint8_t txBuffer[txBuffSize] = { 'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd', '\r', '\n' };
 uint8_t txBuffer[txBuffSize] = {1,2,3,4,5,6,7,8};
 uint8_t rxBuffer[rxBuffSize];
@@ -145,7 +145,14 @@ int main(void)
 	
 	//Initialize EXO arrays ( should be 5)
 	resetExoHitVars();
-	memset(exoThresh, 0xFF, sizeof(exoThresh)*sizeof(exoThresh[0])); //Max out threshold which can be lowered
+	uint8_t Adbug1 = sizeof(exoThresh);
+	//set max threshold for all channels
+	for (int i = 0; i < numOfChansADC1; i++)
+	{
+		exoThresh[i] = 0xFFFF;
+	}
+	
+	
 	struct errorCode myErrorCode = ReseterrorCode();
 	
   /* USER CODE END 1 */
@@ -199,10 +206,10 @@ int main(void)
 	  //Update State of Controller
 	  
 	  //Get adc valus
-	  for (int i = 0; i > numOfChansADC1; i++)
-	  {
-		  Adc1Loop[i] = Adc1Results[i];
-	  }
+	  for (int i = 0; i < numOfChansADC1; i++)
+		  {
+			  Adc1Loop[i] = Adc1Results[i];
+		  }
 	  ADC2_LoopVal = ADC2_val;
 	  //Get PB values
 	  buttonStatus = HAL_GPIO_ReadPin(PushB1_GPIO_Port, PushB1_Pin);
@@ -223,8 +230,29 @@ int main(void)
 		  }
 		  // update threshold value
 		  exoThresh[selectADC] = ADC2_LoopVal;
+		  buttonStatus = 0;
+		  HAL_Delay(200);
 		  //TODO reset error state of sensor on value change (alows for retime reset and adjustments
 	  }
+		//compare ADC to Thresh and count hits
+	  for (enum Sensor sensorPos = LL; sensorPos < numberOfLimbs; sensorPos++)
+	  {
+		  //check if sensor is in error state and if so leave it alone
+		  if (exoCurrentState[sensorPos] != -1)
+		  {
+			  //set flag if threshold is exceded
+			  if (Adc1Loop[sensorPos] > exoThresh[sensorPos])
+			  {
+				  exoCurrentState[sensorPos] = 1;
+			  }
+			  else
+			  {
+				  exoCurrentState[sensorPos] = 0;
+			  }
+		  }
+	  }	  
+	  
+	  
 	  
 	  uint8_t resetFlag = 0; //repalce this
 	  //Reset Condition
@@ -245,12 +273,17 @@ int main(void)
 	  else //check State of punches
 	  {
 		  // iterate across sensors and store valus sensor error flag is -1 on exoCurrent state which is handeled above
-		  for (uint16_t sensorPos = 0; sensorPos < numberOfLimbs; sensorPos++)
+		  for (enum Sensor sensorPos = 0; sensorPos < numberOfLimbs; sensorPos++)
 		  {
 			  if ((exoCurrentState[sensorPos] == 1) && (exoStateCounter[sensorPos] == 0))
 			  {
 				  //
 				  exoCounter[sensorPos] += 1;
+				  exoStateCounter[sensorPos] += 1; 
+			  }
+			  else if ((exoCurrentState[sensorPos] == 1) && (exoStateCounter[sensorPos]> 0) && (sensrErrCntThresh >= exoStateCounter[sensorPos]))
+			  {
+				  //
 				  exoStateCounter[sensorPos] += 1; 
 			  }
 			  //Entered Error State Must Reset System
@@ -272,7 +305,7 @@ int main(void)
 //	  
 //	  
 	  //Send results to master
-	  HAL_Delay(450);
+	  HAL_Delay(200);
 	  	  for (int i = 0; i < numberOfLimbs; i++)
 	  {
 		  txBuffer[i] = (uint8_t) exoCounter[i];
