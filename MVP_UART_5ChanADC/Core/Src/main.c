@@ -200,7 +200,7 @@ int main(void)
 
 	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_13, GPIO_PIN_RESET);
 	//Base ADC Threshholds (need to calibrate final version
-	exoThresh[0] =  1400; exoThresh[1] =  1400; exoThresh[2] =  1100; exoThresh[3] =  52; exoThresh[4] =  3500; exoThresh[5] =  3500; 
+	exoThresh[0] =  1400; exoThresh[1] =  1400; exoThresh[2] =  1100; exoThresh[3] =  380; exoThresh[4] =  3500; exoThresh[5] =  3500; 
 	
   /* USER CODE END 2 */
   /* Infinite loop */
