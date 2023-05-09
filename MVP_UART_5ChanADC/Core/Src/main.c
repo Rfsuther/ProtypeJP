@@ -808,7 +808,7 @@ void calibrateSensor()
 	uint16_t channelMax[numberOfLimbs] = { 0 };
 	uint16_t tempChannelStorage = 0;
 	//obtain max values after running loop jn times
-	for (uint16_t j = 0; j < 5000; j++)
+	for (uint16_t j = 0; j < 7000; j++)
 	{
 		for (enum Sensor i = 0; i < numOfChansADC1; i++)
 		{
