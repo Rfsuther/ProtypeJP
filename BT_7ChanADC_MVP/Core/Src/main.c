@@ -18,7 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-
+#include <string.h>
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -110,9 +110,10 @@ uint8_t BTrxStorageBuffer[rxBuffSize];
 HAL_StatusTypeDef ADC1Status; //return status of ADC1 for debugging
 HAL_StatusTypeDef ADC2Status; //return status of ADC2 for debugging
 HAL_StatusTypeDef timer1Status; //return status of timer 1 for debugging
-HAL_StatusTypeDef txStatus; //return status on tranmit for debugging
-HAL_StatusTypeDef rxStatus; //return status on receive for debugging
-
+HAL_StatusTypeDef USBtxStatus; //return status on tranmit for debugging
+HAL_StatusTypeDef USBrxStatus; //return status on receive for debugging
+HAL_StatusTypeDef BTtxStatus; //return status on tranmit for debugging
+HAL_StatusTypeDef BTrxStatus; //return status on receive for debugging
 
 /* USER CODE END PV */
 
@@ -150,7 +151,6 @@ int main(void)
 	//Initialize EXO arrays ( should be 5
 	
 	resetExoHitVars();
-	uint8_t Adbug1 = sizeof(exoThresh);
 	//set max threshold for all channels
 	for (int i = 0; i < numOfChansADC1; i++)
 	{
@@ -198,11 +198,17 @@ int main(void)
 		Error_Handler();
 	
 	//ConfigureDMA
-	rxStatus = HAL_UARTEx_ReceiveToIdle_DMA(&huart3, USBrxBuffer, sizeof(USBrxBuffer) / sizeof(USBrxBuffer[0])); //CHANGE
-	if (rxStatus != HAL_OK)
+	USBrxStatus = HAL_UARTEx_ReceiveToIdle_DMA(&huart3, USBrxBuffer, sizeof(USBrxBuffer) / sizeof(USBrxBuffer[0])); //CHANGE
+	if (USBrxStatus != HAL_OK)
 		Error_Handler();
 	__HAL_DMA_DISABLE_IT(&hdma_usart3_rx, DMA_IT_HT); //remeber that I set DMA handel to extern in the .h file this may cause bugs
-
+	
+	BTrxStatus = HAL_UARTEx_ReceiveToIdle_DMA(&huart2, BTrxBuffer, sizeof(BTrxBuffer) / sizeof(BTrxBuffer[0])); //CHANGE
+	if (BTrxStatus != HAL_OK)
+		Error_Handler();
+	__HAL_DMA_DISABLE_IT(&hdma_usart3_rx, DMA_IT_HT); //remeber that I set DMA handel to extern in the .h file this may cause bugs
+	
+	
 
 	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_13, GPIO_PIN_RESET);
 	//Base ADC Threshholds (need to calibrate final version
@@ -335,13 +341,19 @@ int main(void)
 	  HAL_Delay(100);
 	  	  for (int i = 0; i < numberOfLimbs; i++)
 	  {
-		  USBtxBuffer[i] = (uint8_t) exoCounter[i];
+		  USBtxBuffer[i] = (uint8_t) exoCounter[i];  //CHANGE
+		  BTtxBuffer[i] = (uint8_t) exoCounter[i]; //CHANGE //TODO Combine Buffers for optimizatition
 	  }
 	  
-	  txStatus = HAL_UART_Transmit(&huart3, USBtxBuffer, sizeof(USBtxBuffer) / sizeof(USBtxBuffer[0]), 100); //CHANGE
-	  //rxStatus = HAL_UART_Receive(&huart3, USBrxBuffer, sizeof(USBrxBuffer) / sizeof(USBrxBuffer[0]), 500);
-	if(txStatus != HAL_OK)
+	  USBtxStatus = HAL_UART_Transmit(&huart3, USBtxBuffer, sizeof(USBtxBuffer) / sizeof(USBtxBuffer[0]), 100); //CHANGE
+	  //USBrxStatus = HAL_UART_Receive(&huart3, USBrxBuffer, sizeof(USBrxBuffer) / sizeof(USBrxBuffer[0]), 500);
+	if(USBtxStatus != HAL_OK)
 		Error_Handler();
+	  
+	  BTtxStatus = HAL_UART_Transmit(&huart2, BTtxBuffer, sizeof(BTtxBuffer) / sizeof(BTtxBuffer[0]), 100); //CHANGE
+//USBrxStatus = HAL_UART_Receive(&huart2, USBrxBuffer, sizeof(USBrxBuffer) / sizeof(USBrxBuffer[0]), 500);
+	if (BTtxStatus != HAL_OK)
+	  Error_Handler();
 	
     /* USER CODE END WHILE */
 
@@ -783,12 +795,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PA0 PA1 PA4 PA8
-                           PA9 PA10 PA11 PA12
-                           PA15 */
-  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_4|GPIO_PIN_8
-                          |GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12
-                          |GPIO_PIN_15;
+  /*Configure GPIO pins : PA0 PA1 PA2 PA4
+                           PA8 PA9 PA10 PA11
+                           PA12 PA15 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_4
+                          |GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11
+                          |GPIO_PIN_12|GPIO_PIN_15;
   GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
@@ -824,12 +836,10 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pins : PD10 PD11 PD12 PD13
                            PD14 PD15 PD0 PD1
-                           PD2 PD3 PD4 PD5
-                           PD7 */
+                           PD2 PD3 PD4 PD7 */
   GPIO_InitStruct.Pin = GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13
                           |GPIO_PIN_14|GPIO_PIN_15|GPIO_PIN_0|GPIO_PIN_1
-                          |GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5
-                          |GPIO_PIN_7;
+                          |GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_7;
   GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
@@ -891,13 +901,29 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
   //USART3 section for host communication  //CHANGE ADD SAME CODE FOR UART2
   if (huart->Instance == USART3)
   {
-    memcpy(rxStorageBuffer, USBrxBuffer, Size); 
+    memcpy(rxStorageBuffer, USBrxBuffer, Size);
+	USBrxStatus = HAL_UARTEx_ReceiveToIdle_DMA(&huart3, USBrxBuffer, sizeof(USBrxBuffer) / sizeof(USBrxBuffer[0])); //CHANGE
+	if (USBrxStatus != HAL_OK)
+		Error_Handler();
+	__HAL_DMA_DISABLE_IT(&hdma_usart3_rx, DMA_IT_HT); //remeber that I set DMA handel to extern in the .h file this may cause bugs
   }
   
-  rxStatus = HAL_UARTEx_ReceiveToIdle_DMA(&huart3, USBrxBuffer, sizeof(USBrxBuffer) / sizeof(USBrxBuffer[0])); //CHANGE
-  if (rxStatus != HAL_OK)
-    Error_Handler();
-  __HAL_DMA_DISABLE_IT(&hdma_usart3_rx, DMA_IT_HT); //remeber that I set DMA handel to extern in the .h file this may cause bugs
+if (huart->Instance == USART2)
+{
+	memcpy(rxStorageBuffer, BTrxBuffer, Size);
+	BTrxStatus = HAL_UARTEx_ReceiveToIdle_DMA(&huart2, BTrxBuffer, sizeof(BTrxBuffer) / sizeof(BTrxBuffer[0])); //CHANGE
+	if (BTrxStatus != HAL_OK)
+		Error_Handler();
+	__HAL_DMA_DISABLE_IT(&hdma_usart2_rx, DMA_IT_HT); //remeber that I set DMA handel to extern in the .h file this may cause bugs
+}
+	
+
+	
+	//BTrxStatus = HAL_UARTEx_ReceiveToIdle_DMA(&huart3, BTrxBuffer, sizeof(BTrxBuffer) / sizeof(BTrxBuffer[0])); //CHANGE
+	//if (BTrxStatus != HAL_OK)
+	//	Error_Handler();
+	//__HAL_DMA_DISABLE_IT(&hdma_usart2_rx, DMA_IT_HT); //remeber that I set DMA handel to extern in the .h file this may cause bugs
+	
   HAL_GPIO_TogglePin(LED_Blue_GPIO_Port, LED_Blue_Pin);
 }
 
