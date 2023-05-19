@@ -257,20 +257,12 @@ int main(void)
 	  
 	  
 	  
-	  	  //update ADC threshold values
+	  	  //Changed to score reset.
 	  if (buttonStatus == 1)
 	  {
-		  //increment channel counter
-		  if (selectADC >= Hd)
-		  {
-			  selectADC = LL;
-		  } 
-		  else
-		  {
-			  selectADC += 1;
-		  }
-		  // update threshold value
-		  exoThresh[selectADC] = ADC2_LoopVal;
+		  //
+		  resetExoHitVars();
+
 		  buttonStatus = 0;
 		  HAL_Delay(100);
 		  //TODO reset error state of sensor on value change (alows for retime reset and adjustments
