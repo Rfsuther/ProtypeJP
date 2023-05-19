@@ -18,7 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include <string.h>
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -87,6 +87,8 @@ enum Sensor selectADC = LL;
 volatile uint16_t Adc1Results[numOfChansADC1];
 volatile uint16_t ADC2_val = 0;
 uint16_t Adc1Loop[numOfChansADC1] = {0};
+
+uint32_t Adc1Filt[numOfChansADC1] = { 0 };
 uint16_t ADC2_LoopVal = 0;
 
 //GPIO PVs
@@ -147,18 +149,7 @@ void calibrateSensor();
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	
-	//Initialize EXO arrays ( should be 5
-	
-	resetExoHitVars();
-	//set max threshold for all channels
-	for (int i = 0; i < numOfChansADC1; i++)
-	{
-		exoThresh[i] = 0xFFFF;
-	}
-	
-	struct errorCode myErrorCode = ReseterrorCode();
-	
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -224,16 +215,40 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	int loop;
-	HAL_Delay(2000);
   while (1)
   {
 	  //Update State of Controller
 	  
-	  //Get adc valus
+	  //Get adc values
+	  
+	  //No filter loop
+	  //	  for (enum Sensor i = 0; i < numOfChansADC1; i++)
+//		  {
+//			  Adc1Loop[i] = Adc1Results[i];
+//		  }
 	  for (enum Sensor i = 0; i < numOfChansADC1; i++)
 		  {
-			  Adc1Loop[i] = Adc1Results[i];
+			  Adc1Filt[i] = Adc1Results[i];
 		  }
+	  
+	  //ADD extra values for averageing filter
+	  uint8_t numberOfTaps = 20;
+	  for (enum Sensor j = 0; j < numberOfTaps; j++)
+	  {
+			  for (enum Sensor i = 0; i < numOfChansADC1; i++)
+			  {
+				  Adc1Filt[i] += Adc1Results[i];
+			  }
+		  HAL_Delay(2);
+	  }
+	  //average out values
+	  for (enum Sensor i = 0; i < numOfChansADC1; i++)
+	  {
+		  Adc1Loop[i] = (uint16_t)((double)Adc1Filt[i] / (1.0*numberOfTaps));
+	  }
+	  
+
+	  
 	  ADC2_LoopVal = ADC2_val;
 	  //Get PB values
 	  
@@ -470,7 +485,7 @@ static void MX_ADC1_Init(void)
 
   /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
   */
-  sConfig.Channel = ADC_CHANNEL_7;
+  sConfig.Channel = ADC_CHANNEL_9;
   sConfig.Rank = ADC_REGULAR_RANK_4;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
@@ -479,7 +494,7 @@ static void MX_ADC1_Init(void)
 
   /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
   */
-  sConfig.Channel = ADC_CHANNEL_9;
+  sConfig.Channel = ADC_CHANNEL_7;
   sConfig.Rank = ADC_REGULAR_RANK_5;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
@@ -884,7 +899,7 @@ void calibrateSensor()
 	for (enum Sensor sensorPos = 0; sensorPos < numberOfLimbs; sensorPos++)
 	{
 	
-		exoThresh[sensorPos] = (uint16_t)((double)channelMax[sensorPos] * 1.3);
+		exoThresh[sensorPos] = (uint16_t)(((double)channelMax[sensorPos]+20) * 1.3); //added + 20 to overcome noise floor problem
 	}	  
 }
 

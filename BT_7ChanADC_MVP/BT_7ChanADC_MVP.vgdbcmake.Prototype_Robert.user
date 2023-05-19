@@ -38,55 +38,30 @@
           <Enabled>false</Enabled>
         </e>
         <h>false</h>
-        <g>true</g>
-        <a>false</a>
-      </e32>
-      <e32>
-        <c>BTtxBuffer</c>
-        <b>com.sysprogs.fixed</b>
-        <f>true</f>
-        <e>
-          <ComparisonMode>Equals</ComparisonMode>
-          <Enabled>false</Enabled>
-        </e>
-        <h>false</h>
-        <g>true</g>
-        <a>false</a>
-      </e32>
-      <e32>
-        <c>USBtxBuffer</c>
-        <b>com.sysprogs.fixed</b>
-        <f>true</f>
-        <e>
-          <ComparisonMode>Equals</ComparisonMode>
-          <Enabled>false</Enabled>
-        </e>
-        <h>false</h>
-        <g>true</g>
-        <a>false</a>
-      </e32>
-      <e32>
-        <c>BTrxBuffer</c>
-        <b>com.sysprogs.fixed</b>
-        <f>true</f>
-        <e>
-          <ComparisonMode>Equals</ComparisonMode>
-          <Enabled>false</Enabled>
-        </e>
-        <h>false</h>
-        <g>true</g>
-        <a>false</a>
-      </e32>
-      <e32>
-        <c>USBrxStatus</c>
-        <b>com.sysprogs.types.builtin.UInt8</b>
-        <f>true</f>
-        <e>
-          <ComparisonMode>Equals</ComparisonMode>
-          <Enabled>false</Enabled>
-        </e>
-        <h>false</h>
         <g>false</g>
+        <a>false</a>
+      </e32>
+      <e32>
+        <c>exoCounter</c>
+        <b>com.sysprogs.fixed</b>
+        <f>true</f>
+        <e>
+          <ComparisonMode>Equals</ComparisonMode>
+          <Enabled>false</Enabled>
+        </e>
+        <h>false</h>
+        <g>true</g>
+        <a>false</a>
+      </e32>
+      <e32>
+        <c>exoThresh</c>
+        <f>true</f>
+        <e>
+          <ComparisonMode>Equals</ComparisonMode>
+          <Enabled>false</Enabled>
+        </e>
+        <h>false</h>
+        <g>true</g>
         <a>false</a>
       </e32>
     </e>
@@ -97,7 +72,80 @@
       </a>
       <a>
         <a>com.sysprogs.SpecificVariables</a>
-        <b />
+        <b>
+          <e32>
+            <c>Adc1Loop[0]</c>
+            <b>com.sysprogs.types.builtin.UInt16</b>
+            <f>true</f>
+            <e>
+              <ComparisonMode>Equals</ComparisonMode>
+              <Enabled>false</Enabled>
+            </e>
+            <h>true</h>
+            <g>false</g>
+            <a>false</a>
+          </e32>
+          <e32>
+            <c>Adc1Loop[1]</c>
+            <b>com.sysprogs.types.builtin.UInt16</b>
+            <f>true</f>
+            <e>
+              <ComparisonMode>Equals</ComparisonMode>
+              <Enabled>false</Enabled>
+            </e>
+            <h>true</h>
+            <g>false</g>
+            <a>false</a>
+          </e32>
+          <e32>
+            <c>Adc1Loop[2]</c>
+            <b>com.sysprogs.types.builtin.UInt16</b>
+            <f>true</f>
+            <e>
+              <ComparisonMode>Equals</ComparisonMode>
+              <Enabled>false</Enabled>
+            </e>
+            <h>true</h>
+            <g>false</g>
+            <a>false</a>
+          </e32>
+          <e32>
+            <c>Adc1Loop[3]</c>
+            <b>com.sysprogs.types.builtin.UInt16</b>
+            <f>true</f>
+            <e>
+              <ComparisonMode>Equals</ComparisonMode>
+              <Enabled>false</Enabled>
+            </e>
+            <h>true</h>
+            <g>false</g>
+            <a>false</a>
+          </e32>
+          <e32>
+            <c>Adc1Loop[4]</c>
+            <b>com.sysprogs.types.builtin.UInt16</b>
+            <f>true</f>
+            <e>
+              <ComparisonMode>Equals</ComparisonMode>
+              <Enabled>false</Enabled>
+            </e>
+            <h>true</h>
+            <g>false</g>
+            <a>false</a>
+          </e32>
+          <e32>
+            <c>Adc1Loop[5]</c>
+            <b>com.sysprogs.types.builtin.UInt16</b>
+            <f>true</f>
+            <e>
+              <ComparisonMode>Equals</ComparisonMode>
+              <Enabled>false</Enabled>
+            </e>
+            <h>true</h>
+            <g>false</g>
+            <a>false</a>
+          </e32>
+        </b>
       </a>
     </b>
     <c>

@@ -2,8 +2,8 @@
 ADC1.Channel-0\#ChannelRegularConversion=ADC_CHANNEL_10
 ADC1.Channel-1\#ChannelRegularConversion=ADC_CHANNEL_5
 ADC1.Channel-2\#ChannelRegularConversion=ADC_CHANNEL_6
-ADC1.Channel-3\#ChannelRegularConversion=ADC_CHANNEL_7
-ADC1.Channel-4\#ChannelRegularConversion=ADC_CHANNEL_9
+ADC1.Channel-3\#ChannelRegularConversion=ADC_CHANNEL_9
+ADC1.Channel-4\#ChannelRegularConversion=ADC_CHANNEL_7
 ADC1.Channel-5\#ChannelRegularConversion=ADC_CHANNEL_13
 ADC1.ClockPrescaler=ADC_CLOCK_SYNC_PCLK_DIV4
 ADC1.DMAContinuousRequests=ENABLE
