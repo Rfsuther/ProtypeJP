@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -84,7 +84,7 @@ struct errorCode
 enum Sensor selectADC = LL;
 
 //ADC PVs
-volatile uint16_t Adc1Results[numOfChansADC1];
+volatile uint16_t Adc1Raw[numOfChansADC1]; //data straight from ADC and DMA
 volatile uint16_t ADC2_val = 0;
 uint16_t Adc1Loop[numOfChansADC1] = {0};
 
@@ -179,7 +179,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
 	//Start Periferals
-	if (HAL_ADC_Start_DMA(&hadc1, (uint32_t *)Adc1Results, sizeof(Adc1Results) / sizeof(Adc1Results[0])) != HAL_OK)
+	if (HAL_ADC_Start_DMA(&hadc1, (uint32_t *)Adc1Raw, sizeof(Adc1Raw) / sizeof(Adc1Raw[0])) != HAL_OK)
 		Error_Handler();	
 	if (HAL_ADC_Start(&hadc2) != HAL_OK)
 		Error_Handler();
@@ -202,8 +202,6 @@ int main(void)
 	
 
 	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_13, GPIO_PIN_RESET);
-	//Base ADC Threshholds (need to calibrate final version
-	exoThresh[0] =  1500; exoThresh[1] =  2450; exoThresh[2] =  950; exoThresh[3] =  250; exoThresh[4] =  3500; exoThresh[5] =  3500; 
 	//TODO add auto calibrate
 	calibrateSensor();
 	
@@ -224,20 +222,20 @@ int main(void)
 	  //No filter loop
 	  //	  for (enum Sensor i = 0; i < numOfChansADC1; i++)
 //		  {
-//			  Adc1Loop[i] = Adc1Results[i];
+//			  Adc1Loop[i] = Adc1Raw[i];
 //		  }
 	  for (enum Sensor i = 0; i < numOfChansADC1; i++)
 		  {
-			  Adc1Filt[i] = Adc1Results[i];
+			  Adc1Filt[i] = Adc1Raw[i];
 		  }
 	  
 	  //ADD extra values for averageing filter
-	  uint8_t numberOfTaps = 20;
+	  uint8_t numberOfTaps = 10;
 	  for (enum Sensor j = 0; j < numberOfTaps; j++)
 	  {
 			  for (enum Sensor i = 0; i < numOfChansADC1; i++)
 			  {
-				  Adc1Filt[i] += Adc1Results[i];
+				  Adc1Filt[i] += Adc1Raw[i];
 			  }
 		  HAL_Delay(2);
 	  }
@@ -261,10 +259,11 @@ int main(void)
 	  if (buttonStatus == 1)
 	  {
 		  //
+		  HAL_Delay(100);
 		  resetExoHitVars();
 
 		  buttonStatus = 0;
-		  HAL_Delay(100);
+		  
 		  //TODO reset error state of sensor on value change (alows for retime reset and adjustments
 	  }
 		//compare ADC to Thresh and count hits
@@ -299,7 +298,7 @@ int main(void)
 	  {
 		  //reset exoCounter and state varibles
 		  resetExoHitVars();
-		  HAL_Delay(500);
+		  HAL_Delay(200);
 		  resetFlag = 0;
 	  }
 	  else if(0) //error flag goes here
@@ -345,7 +344,7 @@ int main(void)
 //	  
 //	  
 	  //Send results to master
-	  HAL_Delay(100);
+	  HAL_Delay(70);
 	  	  for (int i = 0; i < numberOfLimbs; i++)
 	  {
 		  USBtxBuffer[i] = (uint8_t) exoCounter[i];  //CHANGE
@@ -872,12 +871,16 @@ void calibrateSensor()
 {
 	uint16_t channelMax[numberOfLimbs] = { 0 };
 	uint16_t tempChannelStorage = 0;
+	double frcScalar = 7.0;
+	double chestScalar = 1.5;
+	double headScalar = 4;
+		
 	//obtain max values after running loop jn times
-	for (uint16_t j = 0; j < 7000; j++)
+	for (uint16_t j = 0; j < 5000; j++)
 	{
-		for (enum Sensor i = 0; i < numOfChansADC1; i++)
+		for (enum Sensor i = 0; i < numberOfLimbs; i++)
 		{
-			tempChannelStorage = Adc1Results[i];
+			tempChannelStorage = Adc1Raw[i];
 			if (tempChannelStorage  > channelMax[i])
 			{
 				channelMax[i] = tempChannelStorage;
@@ -886,13 +889,19 @@ void calibrateSensor()
 		HAL_Delay(1);
 	}
 	
-	
 	//update threshhold
-	for (enum Sensor sensorPos = 0; sensorPos < numberOfLimbs; sensorPos++)
-	{
 	
-		exoThresh[sensorPos] = (uint16_t)(((double)channelMax[sensorPos]+20) * 1.3); //added + 20 to overcome noise floor problem
-	}	  
+// NOTE THIS section is designed to work with either EVA-00 foam sensors or EVA-01 force sensors an IF statement
+	// will check the range of the sensor and set calibration apporpiately
+	for (enum Sensor sensorPos = 0; sensorPos < Bdy; sensorPos++)
+	{
+		
+		exoThresh[sensorPos] = (uint16_t)(((double)channelMax[sensorPos] + 20) * 10); //added + 20 to overcome noise floor problem
+	}
+	
+	exoThresh[Bdy] = (uint16_t)(((double)channelMax[Bdy] + 20) * chestScalar); //added + 20 to overcome noise floor problem	
+	exoThresh[Hd] = (uint16_t)(((double)channelMax[Hd] + 20) * headScalar); //added + 20 to overcome noise floor problem	
+
 }
 
 //Modified HAL functions
