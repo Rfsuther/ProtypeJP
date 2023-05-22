@@ -874,7 +874,7 @@ void calibrateSensor()
 	double frcScalar = 7.0;
 	double chestScalar = 1.5;
 	double headScalar = 4;
-		
+	double foamScalar = 1.3;
 	//obtain max values after running loop jn times
 	for (uint16_t j = 0; j < 5000; j++)
 	{
@@ -896,8 +896,22 @@ void calibrateSensor()
 	for (enum Sensor sensorPos = 0; sensorPos < Bdy; sensorPos++)
 	{
 		
-		exoThresh[sensorPos] = (uint16_t)(((double)channelMax[sensorPos] + 20) * 10); //added + 20 to overcome noise floor problem
+		if (channelMax[sensorPos] < 150)
+		{
+			exoThresh[sensorPos] = (uint16_t)(((double)channelMax[sensorPos]) * frcScalar); //added + 20 to overcome noise floor problem
+			
+		}
+		else if ((150 < channelMax[sensorPos]) && (channelMax[sensorPos]<3071)) 
+		{
+			exoThresh[sensorPos] = (uint16_t)((double)(channelMax[sensorPos]+5) * 1.3); //added + 20 to overcome noise floor problem
+		}
+		else
+		{
+			exoThresh[sensorPos] = 4050;
+		}
 	}
+	
+	
 	
 	exoThresh[Bdy] = (uint16_t)(((double)channelMax[Bdy] + 20) * chestScalar); //added + 20 to overcome noise floor problem	
 	exoThresh[Hd] = (uint16_t)(((double)channelMax[Hd] + 20) * headScalar); //added + 20 to overcome noise floor problem	
