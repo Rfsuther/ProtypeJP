@@ -24,8 +24,7 @@ MVP_UART_5ChanADC
 First working version of device. However, this is an earlier prototype and should not be used as it lacks both channel filtering and Bluetooth capabilities. 
 
 
-docs_STM_Nuelco
-Saved repo of all manuals and materials used in project
+
 
 ------------------------------------
 OTHER FOLDERS:
@@ -36,3 +35,6 @@ Contains a backup ziped folder. Use cautiously.
 ARUDINO_LEO_ATCOMAND:
 
 Contians a arudino project file that can be used to configure AT commands on new Bluetooth radio HC-05,HC-06. This is tricky. Consult the web for details. Baud rate for TX line is 38400. 
+
+docs_STM_Nuelco
+Saved repo of all manuals and materials used in project
