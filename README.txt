@@ -24,6 +24,9 @@ MVP_UART_5ChanADC
 First working version of device. However, this is an earlier prototype and should not be used as it lacks both channel filtering and Bluetooth capabilities. 
 
 
+docs_STM_Nuelco
+Saved repo of all manuals and materials used in project
+
 ------------------------------------
 OTHER FOLDERS:
 
