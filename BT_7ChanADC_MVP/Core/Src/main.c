@@ -202,7 +202,7 @@ int main(void)
 	
 
 	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_13, GPIO_PIN_RESET);
-	//TODO add auto calibrate
+	
 	calibrateSensor();
 	
 	
@@ -264,7 +264,7 @@ int main(void)
 
 		  buttonStatus = 0;
 		  
-		  //TODO reset error state of sensor on value change (alows for retime reset and adjustments
+		  
 	  }
 		//compare ADC to Thresh and count hits
 	  for (enum Sensor sensorPos = LL; sensorPos < numberOfLimbs; sensorPos++)
@@ -305,7 +305,7 @@ int main(void)
 	  {
 		  while (1)
 		  {
-			  //TODO add error Trap UART
+			
 			  __NOP();
 		  }
 	  }
@@ -347,8 +347,8 @@ int main(void)
 	  HAL_Delay(70);
 	  	  for (int i = 0; i < numberOfLimbs; i++)
 	  {
-		  USBtxBuffer[i] = (uint8_t) exoCounter[i];  //CHANGE
-		  BTtxBuffer[i] = (uint8_t) exoCounter[i]; //CHANGE //TODO Combine Buffers for optimizatition
+		  USBtxBuffer[i] = (uint8_t) exoCounter[i];
+		  BTtxBuffer[i] = (uint8_t) exoCounter[i]; 
 	  }
 	  
 	  USBtxStatus = HAL_UART_Transmit(&huart3, USBtxBuffer, sizeof(USBtxBuffer) / sizeof(USBtxBuffer[0]), 100); //CHANGE
